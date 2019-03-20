@@ -18,10 +18,10 @@
   },
   "homepage": "https://github.com/Anung-Un-Rama/bloccit#readme",
   "devDependencies": {
-    "jasmine": "^3.0.0",
-    "request": "^2.83.0"
+    "jasmine": "^3.3.1",
+    "request": "^2.88.0"
   },
   "dependencies": {
-    "express": "^4.16.2"
+    "express": "^4.16.4"
   }
 }
