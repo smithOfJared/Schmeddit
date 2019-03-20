@@ -5,7 +5,7 @@
 
   - A method that pulls the last 10 topics.
 
-      A: Model as it is the data structure that stores information such as this. 
+      A: Model as it is the data structure that stores information such as this.
 
 
   - A representation of the upvotes on a post.
@@ -14,14 +14,14 @@
 
   - Logic that parses params coming from the client.
 
-      A: This would be the controller as it is what handles incoming client requests. 
+      A: This would be the controller as it is what handles incoming client requests.
 
 
 2. Write a user story with acceptance criteria for a feature that involves moderating content on Bloccit.
 
   - User story: As a user, I want to be able to moderate the content that is posted so
-    that content that is innappropriate can be refused or modified. 
+    that content that is inappropriate can be refused or modified.
 
   - Acceptance criteria:
     When a post is made key phrasing triggers a notification to a moderator or set of
-    moderators for inspection and approval/denial. 
+    moderators for inspection and approval/denial.
