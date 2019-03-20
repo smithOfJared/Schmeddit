@@ -13,3 +13,18 @@ describe("routes: static", () => {
     });
   });
 });
+
+
+/*
+describe("routes: static", () => {
+  describe("GET /marco", () => {
+    it("polo", (done) => {
+      request.get(base, (err, res, body) => {
+        expect(res.statusCode).toBe(200);
+
+        done();
+      });
+    });
+  });
+});
+*/
