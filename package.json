@@ -1,0 +1,19 @@
+{
+  "name": "bloccit",
+  "version": "1.0.0",
+  "description": "A Reddit-like application for users to discuss and share content.",
+  "main": "(src/server.js)",
+  "scripts": {
+    "test": "export NODE_ENV=test && jasmine"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Anung-Un-Rama/bloccit.git"
+  },
+  "author": "Jared Smith",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Anung-Un-Rama/bloccit/issues"
+  },
+  "homepage": "https://github.com/Anung-Un-Rama/bloccit#readme"
+}
