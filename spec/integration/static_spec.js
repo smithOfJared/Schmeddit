@@ -13,3 +13,6 @@ describe("routes: static", () => {
     });
   });
 });
+  //tig Comand line tool displays all commits install it!
+
+  //Look into sublime packages. Get rid of VS
