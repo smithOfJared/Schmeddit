@@ -13,19 +13,6 @@ describe("routes: static", () => {
     });
   });
 });
+  //tig Comand line tool displays all commits install it!
 
-
-/*
-describe("routes: static", () => {
-  describe("GET /marco", () => {
-    it("polo", (done) => {
-      request.get(base, (err, res, body) => {
-        expect(res.statusCode).toBe(200);
-
-        done();
-      });
-    });
-  });
-});
-*/
-=======
+  //Look into sublime packages. Get rid of VS
