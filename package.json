@@ -21,7 +21,12 @@
     "request": "^2.88.0"
   },
   "dependencies": {
+<<<<<<< HEAD
     "express": "^4.16.4",
     "jasmine": "^3.3.1"
+=======
+    "dotenv": "^5.0.0",
+    "express": "^4.16.4"
+>>>>>>> checkpoint-branch
   }
 }
