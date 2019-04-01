@@ -3,13 +3,13 @@ module.exports = (sequelize, DataTypes) => {
   var Banner = sequelize.define('Banner', {
     source: DataTypes.STRING,
     description: DataTypes.STRING,
-    topicId: {
+    topicID: {
      type: DataTypes.INTEGER,
      onDelete: "CASCADE",
      references: {
-       model: "Topic",
+       model: "Topics",
        key: "id",
-       as: "topicId",
+       as: "topicID",
      }
    }
   }, {});
