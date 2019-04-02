@@ -29,6 +29,7 @@
     "jasmine": "^3.3.1",
     "pg": "^7.4.1",
     "pg-hstore": "^2.3.2",
-    "sequelize": "^4.32.6"
+    "sequelize": "^4.32.6",
+    "sequelize-cli": "^5.4.0"
   }
 }
