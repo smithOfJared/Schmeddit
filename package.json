@@ -18,9 +18,11 @@
   },
   "homepage": "https://github.com/Anung-Un-Rama/bloccit#readme",
   "devDependencies": {
+    "faker": "^4.1.0",
     "request": "^2.88.0"
   },
   "dependencies": {
+    "body-parser": "^1.18.2",
     "dotenv": "^5.0.0",
     "ejs": "^2.5.7",
     "express": "^4.16.4",
