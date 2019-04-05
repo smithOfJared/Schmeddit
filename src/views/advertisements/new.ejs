@@ -1,28 +1,25 @@
 <html>
-
-<head>
+  <head>
     <% include ../static/partials/head.ejs %>
-</head>
-
-<body>
+  </head>
+  <body>
     <% include ../static/partials/navbar.ejs %>
 
-        <main class="container">
+    <main class="container">
 
-            <h1>New Topic</h1>
+      <h1>New Advertisement</h1>
 
-            <form action="/advertisements/create" method="post">
-                <div class="form-group">
-                    <label for="title">New Advertisement</label>
-                    <input type="text" class="form-control" name="title" aria-describedby="titleHelp" placeholder="Enter Title">
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
+      <form action="/advertisements/create" method="post">
+        <div class="form-group">
+          <label for="title">New Advertisement</label>
+          <input type="text" class="form-control" name="title" aria-describedby="titleHelp" placeholder="Enter Title">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
 
-        </main>
+    </main>
 
-        <% include ../static/partials/baseScripts.ejs %>
+    <% include ../static/partials/baseScripts.ejs %>
 
-</body>
-
+  </body>
 </html>
