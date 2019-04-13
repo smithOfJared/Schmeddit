@@ -49,13 +49,12 @@ describe("Post", () => {
       });
     });
     it("should not create a post with missing title, body, or assigned topic", (done) => {
-      Post.create({
-        title: "Pros of Cryosleep during the long journey"
-      })
+      Post.create({})
       .then((post) => {
         done();
       })
       .catch((err) => {
+        expect(err.message).toContain("Post.title cannot be null");
         expect(err.message).toContain("Post.body cannot be null");
         expect(err.message).toContain("Post.topicId cannot be null");
         done();

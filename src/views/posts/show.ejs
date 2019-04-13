@@ -6,8 +6,19 @@
 <body>
   <% include ../static/partials/navbar.ejs %>
   <main class="container">
-    <h1><%= post.title %></h1
-      <a href="/topics/<%= post.topicId %>/posts/<%= post.id %>/edit" class="btn btn-warning">Edit</a>
+    <div>
+      <h1 class="d-inline-block"><%= post.title %></h1>
+      <% post.flairs.forEach((flair) => { %>
+        <span class="badge align-text-top" style="background-color: <%= flair.color %>">
+          <%= flair.name %>
+          <form style="display:initial" action="/topics/<%= post.topicId %>/posts/<%= post.id %>/flairs/<%= flair.id %>/destroy" method="post">
+            <button type="submit" class="badge badge-light">x</button>
+          </form>
+        </span>
+      <% }) %>
+    </div>
+    <a href="/topics/<%= post.topicId %>/posts/<%= post.id %>/edit" class="btn btn-warning">Edit</a>
+    <a href="/topics/<%= post.topicId %>/posts/<%= post.id %>/flairs/new" class="btn btn-success">Add Flair</a>
     <form style="display:initial" action="/topics/<%= post.topicId %>/posts/<%= post.id %>/destroy" method="post">
       <button type="submit" class="btn btn-danger">Delete</button>
     </form>
