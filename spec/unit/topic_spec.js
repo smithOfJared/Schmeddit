@@ -66,6 +66,7 @@ describe("Topic", () => {
         this.topic.getPosts()
         .then((associatedPosts) => {
           expect(associatedPosts[0].title).toBe("Expeditions to Alpha Centauri");
+          ///it's saying "expect the first thing in the array to have a title property and have it be..."
           done();
         });
       });
