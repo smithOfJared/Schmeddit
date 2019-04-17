@@ -13,12 +13,12 @@ module.exports = {
     app.use(bodyParser.urlencoded({extended: true}));
     app.use(expressValidator());
     app.use(session({
-   secret: process.env.cookieSecret,
-   resave: false,
-   saveUninitialized: false,
-   cookie: { maxAge: 60000 }
- }));
- app.use(flash());
+      secret: process.env.cookieSecret,
+      resave: false,
+      saveUninitialized: false,
+      cookie: { maxAge: 60000 }
+    }));
+    app.use(flash());
     app.use(express.static(path.join(__dirname, "..", "assets")));
   }
 };
