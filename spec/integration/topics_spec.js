@@ -58,11 +58,11 @@ describe("routes : topics", () => {
     it("should create a new topic and redirect", (done) => {
       request.post(options,
         (err, res, body) => {
-          Topic.findById(this.topic.id)
+          Topic.findOne({where: {title: "blink-182 songs"}})
           .then((topic) => {
             expect(res.statusCode).toBe(303);
-            expect(topic.title).toBe(this.topic.title);
-            expect(topic.description).toBe(this.topic.description);
+            expect(topic.title).toBe(options.form.title);
+            expect(topic.description).toBe(options.form.description);
             done();
           })
           .catch((err) => {
@@ -80,9 +80,15 @@ describe("routes : topics", () => {
           description: "b"
         }
       };
+      let topicCount;
+      Topic.count().then(c => topicCount = c);
       request.post(options,
         (err, res, description) => {
-          expect(res.location).toBe(`${base}/new`)
+          Topic.count()
+          .then(c => {
+            expect(c).toBe(topicCount);
+          });
+          //expect(res.header["location"]).toBe(`${base}new`)
           done();
         }
       );
@@ -115,6 +121,7 @@ describe("routes : topics", () => {
         });
       });
     });
+  });
 
     describe("GET /topics/:id/edit", () => {
       it("should render a view with an edit topic form", (done) => {
@@ -138,18 +145,16 @@ describe("routes : topics", () => {
         };
         request.post(options,
           (err, res, body) => {
-
+            console.log()
             expect(err).toBeNull();
             Topic.findOne({
               where: { id: this.topic.id }
             })
             .then((topic) => {
-              expect(topic.title).toBe("JavaScript Frameworks"); ///JavaScript Frameworks"
+              expect(topic.title).toBe(options.form.title); ///JavaScript Frameworks"
               done();
             });
           });
         });
-      });
-
     });
   });
