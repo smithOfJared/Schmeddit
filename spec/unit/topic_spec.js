@@ -74,11 +74,15 @@ describe("Topic", () => {
         this.topic.getPosts()
         .then((associatedPosts) => {
 <<<<<<< HEAD
+<<<<<<< HEAD
           expect(associatedPosts[0].title).toBe("My first visit to Proxima Centauri b");
 =======
           expect(associatedPosts[0].title).toBe("My first visit to Proxima Centauri");
           ///it's saying "expect the first thing in the array to have a title property and have it be..."
 >>>>>>> checkpoint12-authorization-submission
+=======
+          expect(associatedPosts[0].title).toBe("My first visit to Proxima Centauri b");
+>>>>>>> 122a526b231a140686d13937cf0d1b6de56c862d
           done();
         });
       });

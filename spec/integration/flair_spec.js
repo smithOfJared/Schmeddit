@@ -14,6 +14,7 @@ describe("routes : flairs", () => {
     this.flair;
     this.user;
 <<<<<<< HEAD
+<<<<<<< HEAD
     sequelize.sync({force: true}).then((res) => {
       User.create({
         email: "starman@tesla.com",
@@ -25,6 +26,13 @@ describe("routes : flairs", () => {
         email: "starman@tesla.com",
         password: "Trekkie4lyfe",
 >>>>>>> checkpoint12-authorization-submission
+=======
+    
+    sequelize.sync({force: true}).then((res) => {
+      User.create({
+        email: "starman@tesla.com",
+        password: "Trekkie4lyfe",
+>>>>>>> 122a526b231a140686d13937cf0d1b6de56c862d
       })
       .then((user) => {
         this.user = user;
@@ -35,14 +43,18 @@ describe("routes : flairs", () => {
         .then((topic) => {
           this.topic = topic;
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> checkpoint12-authorization-submission
+=======
+>>>>>>> 122a526b231a140686d13937cf0d1b6de56c862d
           Post.create({
             title: "Snowball Fighting",
             body: "So much snow!",
             topicId: this.topic.id,
             userId: this.user.id
+<<<<<<< HEAD
 <<<<<<< HEAD
           })
           .then((post) => {
@@ -58,6 +70,8 @@ describe("routes : flairs", () => {
             done();
           })
 =======
+=======
+>>>>>>> 122a526b231a140686d13937cf0d1b6de56c862d
           })
           .then((post) => {
             this.post = post;
@@ -71,7 +85,10 @@ describe("routes : flairs", () => {
             });
             done();
           })
+<<<<<<< HEAD
 >>>>>>> checkpoint12-authorization-submission
+=======
+>>>>>>> 122a526b231a140686d13937cf0d1b6de56c862d
           .catch((err) => {
             console.log(err);
             done();

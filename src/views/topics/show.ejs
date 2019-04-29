@@ -9,12 +9,16 @@
   <a href="/topics/<%= topic.id %>/edit" class="btn btn-warning">Edit</a>
   <% if(currentUser) { %>
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 122a526b231a140686d13937cf0d1b6de56c862d
     <a href="/topics/<%= topic.id %>/posts/new" class="btn btn-success">New Post</a>
   <% if(currentUser.isAdmin()) { %>
     <form style="display:initial" action="/topics/<%= topic.id %>/destroy" method="post">
       <button type="submit" class="btn btn-danger">Delete</button>
     </form>
    <% }} %>
+<<<<<<< HEAD
 =======
      <a href="/topics/<%= topic.id %>/posts/new" class="btn btn-success">New Post</a>
    <% } %>
@@ -24,6 +28,8 @@
      </form>
     <% } %>
 >>>>>>> checkpoint12-authorization-submission
+=======
+>>>>>>> 122a526b231a140686d13937cf0d1b6de56c862d
   <p><%= topic.description %></p>
 
   <main class="container">
