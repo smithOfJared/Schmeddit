@@ -13,10 +13,18 @@ describe("routes : flairs", () => {
     this.post;
     this.flair;
     this.user;
+<<<<<<< HEAD
     sequelize.sync({force: true}).then((res) => {
       User.create({
         email: "starman@tesla.com",
         password: "Trekkie4lyfe"
+=======
+
+    sequelize.sync({force: true}).then((res) => {
+      User.create({
+        email: "starman@tesla.com",
+        password: "Trekkie4lyfe",
+>>>>>>> checkpoint12-authorization-submission
       })
       .then((user) => {
         this.user = user;
@@ -26,12 +34,16 @@ describe("routes : flairs", () => {
         })
         .then((topic) => {
           this.topic = topic;
+<<<<<<< HEAD
 
+=======
+>>>>>>> checkpoint12-authorization-submission
           Post.create({
             title: "Snowball Fighting",
             body: "So much snow!",
             topicId: this.topic.id,
             userId: this.user.id
+<<<<<<< HEAD
           })
           .then((post) => {
             this.post = post;
@@ -45,6 +57,21 @@ describe("routes : flairs", () => {
             });
             done();
           })
+=======
+          })
+          .then((post) => {
+            this.post = post;
+            Flair.create({
+              name: "Opinion",
+              color: "blue",
+              postId: this.post.id
+            })
+            .then((flair) => {
+              this.flair = flair;
+            });
+            done();
+          })
+>>>>>>> checkpoint12-authorization-submission
           .catch((err) => {
             console.log(err);
             done();

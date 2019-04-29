@@ -12,6 +12,12 @@
       <main class="container">
 
         <!-- Jumbotron Header -->
+        <% if(notice && notice !== ""){ %>
+          <header class="jumbotron my-4">
+            <%= notice %>
+          </header>
+        <% } %>
+
         <header class="jumbotron my-4">
           <h1 class="display-3">Welcome to Bloccit</h1>
           <p class="lead">An application for users to share information.</p>
