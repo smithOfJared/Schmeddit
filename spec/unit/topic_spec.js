@@ -20,7 +20,7 @@ describe("Topic", () => {
           title: "Expeditions to Alpha Centauri",
           description: "A compilation of reports from recent visits to the star system.",
           posts: [{
-            title: "My first visit to Proxima Centauri",
+            title: "My first visit to Proxima Centauri b",
             body: "I saw some rocks.",
             userId: this.user.id
           }]
@@ -58,7 +58,6 @@ describe("Topic", () => {
     it("should not create a topic with missing title or description", (done) => {
       Topic.create({})
       .then((topic) => {
-        //if this runs, none of the validations are working
         expect(true).toBe(false);
         done();
       })
@@ -73,16 +72,7 @@ describe("Topic", () => {
       it("should return the associated post", (done) => {
         this.topic.getPosts()
         .then((associatedPosts) => {
-<<<<<<< HEAD
-<<<<<<< HEAD
           expect(associatedPosts[0].title).toBe("My first visit to Proxima Centauri b");
-=======
-          expect(associatedPosts[0].title).toBe("My first visit to Proxima Centauri");
-          ///it's saying "expect the first thing in the array to have a title property and have it be..."
->>>>>>> checkpoint12-authorization-submission
-=======
-          expect(associatedPosts[0].title).toBe("My first visit to Proxima Centauri b");
->>>>>>> 122a526b231a140686d13937cf0d1b6de56c862d
           done();
         });
       });

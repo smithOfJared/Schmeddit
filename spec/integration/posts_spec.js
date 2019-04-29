@@ -5,13 +5,6 @@ const sequelize = require("../../src/db/models/index").sequelize;
 const Topic = require("../../src/db/models").Topic;
 const Post = require("../../src/db/models").Post;
 const User = require("../../src/db/models").User;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
->>>>>>> checkpoint12-authorization-submission
-=======
->>>>>>> 122a526b231a140686d13937cf0d1b6de56c862d
 
 describe("routes : posts", () => {
   beforeEach((done) => {
