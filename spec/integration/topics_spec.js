@@ -6,6 +6,7 @@ const Topic = require("../../src/db/models").Topic;
 const User = require("../../src/db/models").User;
 
 
+
 describe("routes : topics", () => {
   beforeEach((done) => {
     this.topic;
@@ -27,15 +28,26 @@ describe("routes : topics", () => {
 
   describe("admin user performing CRUD actions for Topic", () => {
     beforeEach((done) => {
-      request.get({
-        url: "http://localhost:3000/auth/fake",
-        form: {
-          userId: 5,
-          role: "admin"
-        }
-      });
-      done();
-    });
+       User.create({
+         email: "admin@example.com",
+         password: "123456",
+         role: "admin"
+       })
+       .then((user) => {
+         request.get({         // mock authentication
+           url: "http://localhost:3000/auth/fake",
+           form: {
+             role: user.role,     // mock authenticate as admin user
+             userId: user.id,
+             email: user.email
+           }
+         },
+           (err, res, body) => {
+             done();
+           }
+         );
+       });
+     });
 
     describe("GET /topics", () => {
       it("should respond with all topics", (done) => {

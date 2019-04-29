@@ -13,10 +13,11 @@ describe("routes : flairs", () => {
     this.post;
     this.flair;
     this.user;
+    
     sequelize.sync({force: true}).then((res) => {
       User.create({
         email: "starman@tesla.com",
-        password: "Trekkie4lyfe"
+        password: "Trekkie4lyfe",
       })
       .then((user) => {
         this.user = user;
@@ -26,7 +27,6 @@ describe("routes : flairs", () => {
         })
         .then((topic) => {
           this.topic = topic;
-
           Post.create({
             title: "Snowball Fighting",
             body: "So much snow!",

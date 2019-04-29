@@ -20,7 +20,7 @@ describe("Topic", () => {
           title: "Expeditions to Alpha Centauri",
           description: "A compilation of reports from recent visits to the star system.",
           posts: [{
-            title: "My first visit to Proxima Centauri b",
+            title: "My first visit to Proxima Centauri",
             body: "I saw some rocks.",
             userId: this.user.id
           }]

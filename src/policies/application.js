@@ -5,6 +5,10 @@ module.exports = class ApplicationPolicy {
     this.record = record;
   }
 
+  _isLoggedIn() {
+    return this.user != null;
+  }
+
   _isOwner() {
     return this.record && (this.record.userId == this.user.id);
   }
@@ -14,7 +18,7 @@ module.exports = class ApplicationPolicy {
   }
 
   new() {
-    return this.user != null;
+    return this._isLoggedIn();
   }
 
   create() {
