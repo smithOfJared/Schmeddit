@@ -13,7 +13,7 @@ describe("routes : flairs", () => {
     this.post;
     this.flair;
     this.user;
-
+    
     sequelize.sync({force: true}).then((res) => {
       User.create({
         email: "starman@tesla.com",
@@ -50,7 +50,7 @@ describe("routes : flairs", () => {
             done();
           });
         });
-      });
+      })    
     });
   });
   describe("GET /topics/:topicId/posts/:postId/flairs/new", () => {

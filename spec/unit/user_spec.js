@@ -1,10 +1,10 @@
 const sequelize = require("../../src/db/models/index").sequelize;
 const User = require("../../src/db/models").User;
 
+
 describe("User", () => {
 
   beforeEach((done) => {
-// #1
     sequelize.sync({force: true})
     .then(() => {
       done();
