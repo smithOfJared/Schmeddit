@@ -7,7 +7,7 @@ module.exports = {
     res.render("posts/new", {topicId: req.params.topicId});
   },
   create(req, res, next){
-    let newPost= {
+    let newPost = {
       title: req.body.title,
       body: req.body.body,
       topicId: req.params.topicId,
@@ -24,6 +24,7 @@ module.exports = {
   show(req, res, next){
     postQueries.getPost(req.params.id, (err, post) => {
       if(err || post == null){
+        console.log(err);
         res.redirect(404, "/");
       } else {
         res.render("posts/show", {post});
@@ -64,6 +65,7 @@ module.exports = {
     postQueries.getPost(req.params.id, (err, post) => {
       const authorized = new Authorizer(req.user, post).update();
       if(!authorized) {
+        console.log(err);
         req.flash("notice", "You are not authorized to do that.");
         res.redirect(`/topics/${req.params.topicId}/posts/${req.params.id}`);
       } else {

@@ -6,6 +6,7 @@ module.exports = {
     const postRoutes = require("../routes/posts");
     const userRoutes = require("../routes/users");
     const commentRoutes = require("../routes/comments");
+    const voteRoutes = require("../routes/votes");
     const flairRoutes = require("../routes/flairs");
 
     if(process.env.NODE_ENV === "test") {
@@ -17,6 +18,7 @@ module.exports = {
     app.use(postRoutes);
     app.use(userRoutes);
     app.use(commentRoutes);
+    app.use(voteRoutes);
     app.use(topicRoutes);
     app.use(advertisementRoutes);
     app.use(flairRoutes);
