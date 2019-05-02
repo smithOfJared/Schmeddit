@@ -178,6 +178,115 @@ describe("routes : comments", () => {
             });
           })
         });
+
+        describe("comment destroy authorization checks", () => {
+          beforeEach((done) => {
+            this.user1;
+            this.user2;
+            this.topic;
+            this.post;
+            this.comment;
+            sequelize.sync({force: true}).then((res) => {
+              User.create({
+                email: "potatoePete@google.com",
+                password: "6541238s"
+              })
+              .then((user1) => {
+                this.user1 = user1;
+                Topic.create({
+                  title: "Eating all the spaghetti",
+                  description: "A twisted journey into the mind of an avid party pooper",
+                  posts: [{
+                    title: "What? You wanted some of this?",
+                    body: "Ha, you thought you would come to this spaghetti party and actually get some?",
+                    userId: this.user.id
+                  }]
+                }, {
+                  include: {
+                    model: Post,
+                    as: "posts"
+                  }
+                })
+                .then((topic) => {
+                  this.topic = topic;
+                  this.post = this.topic.posts[0];
+                  Comment.create({
+                    body: "Hope you all didn't want some",
+                    userId: this.user1.id,
+                    postId: this.post.id
+                  })
+                  .then((comment) => {
+                    this.comment = comment;
+                    done();
+                  });
+                });
+              });
+            });
+          });
+
+          it("should not delete comment if done by other, non-admin, user", (done) => {
+            User.create({
+              email: "aryaRocks@GoT.com",
+              password: "close-eyes4evr",
+              role: "member"
+            })
+            .then((user2) => {
+              this.user2 = user2;
+              request.get({
+                url: "http://localhost:3000/auth/fake",
+                form: {
+                  userId: user2.id,
+                  role: "member"
+                }
+              });
+              Comment.all()
+              .then((comments) => {
+                const commentCountBeforeDelete = comments.length;
+                expect(commentCountBeforeDelete).toBe(1);
+                request.post(`${base}${this.comment.id}/destroy`, (err, res, body) => {
+                  Comment.all()
+                  .then((comments) => {
+                    expect(comments.length).toBe(commentCountBeforeDelete);
+                    done();
+                  });
+                });
+              });
+            });
+          });
+
+          it("should delete comment if user is admin", (done) => {
+            User.create({
+              email: "JaimeRocks@GoT.com",
+              password: "goldenHand",
+              role: "admin"
+            })
+            .then((user2) => {
+              this.user2 = user2;
+              request.get({
+                url: "http://localhost:3000/auth/fake",
+                form: {
+                  userId: user2.id,
+                  role: "admin"
+                }
+              });
+              Comment.all()
+              .then((comments) => {
+                const commentCountBeforeDelete = comments.length;
+                expect(commentCountBeforeDelete).toBe(1);
+                request.post(`${base}${this.comment.id}/destroy`, (err, res, body) => {
+                  Comment.all()
+                  .then((comments) => {
+                    expect(err).toBeNull();
+                    expect(comments.length).toBe(commentCountBeforeDelete - 1);
+                    done();
+                  });
+                });
+              });
+            });
+          });
+
+
+        });
       });
     });
   });
