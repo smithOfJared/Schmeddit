@@ -191,13 +191,18 @@ describe("routes : posts", () => {
           role: "member"
         })
         .then((user) => {
-          Post.create({
-            title: "this is a title",
-            body: "this is the body for the title",
-            topicId: this.topic.id,
-            userId: user.id
-          })
-          .then((post) => {
+          request.post(posts,
+            (err, res, body) => {
+              expect(err).toBeNull();
+              Post.findOne({
+                where: {id: this.post.id}
+              })
+              .then((post) => {
+                expect(post.title).toBe("Edit Post");
+                done();
+              });
+            });
+          then((post) => {
             request.get(`${base}/${this.topic.id}/posts/${post.id}/edit`,
               (err, res, body) => {
                 expect(body).toContain("Edit Post");
