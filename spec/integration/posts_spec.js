@@ -191,7 +191,7 @@ describe("routes : posts", () => {
           role: "member"
         })
         .then((user) => {
-          request.post(posts,
+          request.post(title,
             (err, res, body) => {
               expect(err).toBeNull();
               Post.findOne({
