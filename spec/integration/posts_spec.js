@@ -41,30 +41,80 @@ describe("routes : posts", () => {
     });
   });
 
-  describe("admin user performing CRUD actions for Post", () => {
-    this.adminUser;
-    beforeEach((done) => {
+  describe("should gather and display accumulated votes with associated post",() => {
+    Topic.create({
+      title: "End Game spoilers",
+      description: "Batman saves everyone",
+    })
+    .then((topic) => {
       User.create({
-        email: "admin@example.com",
-        password: "123456",
-        role: "admin"
+        email: "batman4life@gmail.com",
+        password: "Iamtheknight"
       })
       .then((user) => {
-        this.adminUser = user;
-        request.get({         // mock authentication
-          url: "http://localhost:3000/auth/fake",
-          form: {
-            role: user.role,     // mock authenticate as admin user
-            userId: user.id,
-            email: user.email
-          }
-        },
-        (err, res, body) => {
-          done();
-        }
-      );
+        Post.create({
+          title: "Batman",
+          body: "Did you also think that End Game didn't have enough Batman?",
+          userId: user.id
+        })
+        .then((post) => {
+          Vote.create({
+            value: 1,
+            postId: post.id,
+            userId: user.id
+          })
+          .then((post) => {
+            User.create({
+              email: "DcComics@google.com",
+              password: "1234567"
+            })
+            .then((user) => {
+              Vote.create({
+                value: 1,
+                postId: post.id,
+                userId: user.id
+              })
+              .then((vote) => {
+                expect(post.getPoints()).toBe(2);
+                done();
+              })
+              .catch((err) => {
+                console.log(err);
+                done();
+              });
+            });
+          });
+        });
+      });
     });
   });
+
+
+
+    describe("admin user performing CRUD actions for Post", () => {
+      this.adminUser;
+      beforeEach((done) => {
+        User.create({
+          email: "admin@example.com",
+          password: "123456",
+          role: "admin"
+        })
+        .then((user) => {
+          this.adminUser = user;
+          request.get({         // mock authentication
+            url: "http://localhost:3000/auth/fake",
+            form: {
+              role: user.role,     // mock authenticate as admin user
+              userId: user.id,
+              email: user.email
+            }
+          },
+          (err, res, body) => {
+            done();
+          }
+        );
+      });
+    });
 
     describe("GET /topics/:topicId/posts/new", () => {
       it("should render a new post form", (done) => {
@@ -170,305 +220,305 @@ describe("routes : posts", () => {
                   done();
                 });
               });
-          });
-        });
-      });
-    });
-
-    describe("GET /topics/:topicId/posts/:id/edit", () => {
-      it("should render a view with an edit post form", (done) => {
-        request.get(`${base}/${this.topic.id}/posts/${this.post.id}/edit`, (err, res, body) => {
-          expect(err).toBeNull();
-          expect(body).toContain("Edit Post");
-          expect(body).toContain("Snowball Fighting");
-          done();
-        });
-      });
-      it("should edit another user's post", (done) => {
-        User.create({
-          email: "member@example.com",
-          password: "12345679",
-          role: "member"
-        })
-        .then((user) => {
-          request.post(title,
-            (err, res, body) => {
-              expect(err).toBeNull();
-              Post.findOne({
-                where: {id: this.post.id}
-              })
-              .then((post) => {
-                expect(post.title).toBe("Edit Post");
-                done();
-              });
             });
-          then((post) => {
-            request.get(`${base}/${this.topic.id}/posts/${post.id}/edit`,
-              (err, res, body) => {
-                expect(body).toContain("Edit Post");
-                expect(err).toBeNull();
-              });
-              done();
           });
         });
       });
-    });
 
-    describe("POST /topics/:topicId/posts/:id/update", () => {
-      it("should return a status code 302", (done) => {
-        request.post({
-          url: `${base}/${this.topic.id}/posts/${this.post.id}/update`,
-          form: {
-            title: "Snowball Fighting",
-            body: "I love watching them melt slowly."
-          }
-        }, (err, res, body) => {
-          expect(res.statusCode).toBe(302);
-          done();
-        });
-      });
-      it("should update the post with the given values", (done) => {
-        const options = {
-          url: `${base}/${this.topic.id}/posts/${this.post.id}/update`,
-          form: {
-            title: "Snowball Fighting"
-          }
-        };
-        request.post(options,
-          (err, res, body) => {
+      describe("GET /topics/:topicId/posts/:id/edit", () => {
+        it("should render a view with an edit post form", (done) => {
+          request.get(`${base}/${this.topic.id}/posts/${this.post.id}/edit`, (err, res, body) => {
             expect(err).toBeNull();
-            Post.findOne({
-              where: {id: this.post.id}
-            })
-            .then((post) => {
-              expect(post.title).toBe("Snowball Fighting");
-              done();
-            });
-          });
-        });
-      it("should be able to update another user's post", (done) => {
-        User.create({
-          email: "member@example.com",
-          password: "12345679",
-          role: "member"
-        })
-        .then((user) => {
-          Post.create({
-            title: "this is a title",
-            body: "this is the body for the title",
-            topicId: this.topic.id,
-            userId: user.id
-          })
-          .then((post) => {
-            const options = {
-              url: `${base}/${this.topic.id}/posts/${post.id}/update`,
-              form: {
-                title: "Snowball Fighting",
-                body: "this is the body for the title"
-              }
-            };
-            request.post(options,
-              (err, res, body) => {
-                expect(err).toBeNull();
-                Post.findOne({
-                  where: {id: post.id}
-                })
-                .then((post) => {
-                  expect(post.title).toBe("Snowball Fighting");
-                  done();
-                });
-              });
-          });
-        });
-      });
-    });
-  });
-
-  describe("member user performing CRUD actions for Post", () => {
-    beforeEach((done) => {
-      this.memberUser;
-      this.memberPost;
-      User.create({
-        email: "member@example.com",
-        password: "123456",
-        role: "member"
-      })
-      .then((user) => {
-        this.memberUser = user;
-        Post.create({
-          title: "member post",
-          body: "this is a member post",
-          topicId: this.topic.id,
-          userId: user.id
-        })
-        .then((post) => {
-          this.memberPost = post;
-          request.get({
-            url: "http://localhost:3000/auth/fake",
-            form: {
-              role: user.role,
-              userId: user.id,
-              email: user.email
-            }
-          },
-          (err, res, body) => {
+            expect(body).toContain("Edit Post");
+            expect(body).toContain("Snowball Fighting");
             done();
-          }
-          );
-        });
-    });
-  });
-
-    describe("GET /topics/:topicId/posts/:id", () => {
-      it("should render a view with the selected post", (done) => {
-        request.get(`${base}/${this.topic.id}/posts/${this.post.id}`, (err, res, body) => {
-          expect(err).toBeNull();
-          expect(body).toContain("Snowball Fighting");
-          done();
-        });
-      });
-    });
-
-    describe("POST /topics/:topicId/posts/:id/destroy", () => {
-      it("should delete the post with the associated ID", (done) => {
-        request.post(`${base}/${this.topic.id}/posts/${this.memberPost.id}/destroy`, (err, res, body) => {
-          Post.findById(this.memberPost.id)
-          .then((post) => {
-            expect(err).toBeNull();
-            expect(post).toBeNull();
-            done();
-          })
-        });
-      });
-      it("should not destroy another user's post", (done) => {
-        User.create({
-          email: "member@example.com",
-          password: "12345679",
-          role: "member"
-        })
-        .then((user) => {
-          Post.create({
-            title: "this is a title",
-            body: "this is the body for the title",
-            topicId: this.topic.id,
-            userId: user.id
-          })
-          .then((post) => {
-            request.post(`${base}/${this.topic.id}/posts/${post.id}/destroy`,
-              (err, res, body) => {
-                Post.findById(post.id)
-                .then((post) => {
-                  expect(post).not.toBeNull();
-                  done();
-                });
-              });
           });
         });
-      });
-    });
-
-    describe("GET /topics/:topicId/posts/:id/edit", () => {
-      it("should render a view with an edit post form", (done) => {
-        request.get(`${base}/${this.topic.id}/posts/${this.memberPost.id}/edit`, (err, res, body) => {
-          expect(err).toBeNull();
-          expect(body).toContain("Edit Post");
-          expect(body).toContain("member post");
-          done();
-        });
-      });
-      it("should not edit another user's post", (done) => {
-        User.create({
-          email: "member@example.com",
-          password: "12345679",
-          role: "member"
-        })
-        .then((user) => {
-          Post.create({
-            title: "this is a title",
-            body: "this is the body for the title",
-            topicId: this.topic.id,
-            userId: user.id
-          })
-          .then((post) => {
-            request.get(`${base}/${this.topic.id}/posts/${post.id}/edit`,
-              (err, res, body) => {
-                expect(body).not.toContain("Edit Post");
-                expect(err).toBeNull();
-              });
-              done();
-          });
-        });
-      });
-    });
-
-    describe("POST /topics/:topicId/posts/:id/update", () => {
-      it("should return a status code 302", (done) => {
-        request.post({
-          url: `${base}/${this.topic.id}/posts/${this.memberPost.id}/update`,
-          form: {
-            title: "Snowball Fighting",
-            body: "I love watching them melt slowly."
-          }
-        }, (err, res, body) => {
-          expect(res.statusCode).toBe(302);
-          done();
-        });
-      });
-      it("should update the post with the given values", (done) => {
-        const options = {
-          url: `${base}/${this.topic.id}/posts/${this.memberPost.id}/update`,
-          form: {
-            title: "Snowball Fighting",
-            body: "test body okay"
-          }
-        };
-        request.post(options,
-          (err, res, body) => {
-            expect(err).toBeNull();
-            Post.findOne({
-              where: {id: this.memberPost.id}
-            })
-            .then((post) => {
-              expect(post.title).toBe("Snowball Fighting");
-              done();
-            });
-          });
-        });
-        it("should not update another user's post", (done) => {
+        it("should edit another user's post", (done) => {
           User.create({
             email: "member@example.com",
             password: "12345679",
             role: "member"
           })
           .then((user) => {
-            Post.create({
-              title: "this is a title",
-              body: "this is the body for the title",
-              topicId: this.topic.id,
-              userId: user.id
-            })
-            .then((post) => {
-              const options = {
-                url: `${base}/${this.topic.id}/posts/${post.id}/update`,
+            request.post(title,
+              (err, res, body) => {
+                expect(err).toBeNull();
+                Post.findOne({
+                  where: {id: this.post.id}
+                })
+                .then((post) => {
+                  expect(post.title).toBe("Edit Post");
+                  done();
+                });
+              });
+              then((post) => {
+                request.get(`${base}/${this.topic.id}/posts/${post.id}/edit`,
+                  (err, res, body) => {
+                    expect(body).toContain("Edit Post");
+                    expect(err).toBeNull();
+                  });
+                  done();
+                });
+              });
+            });
+          });
+
+          describe("POST /topics/:topicId/posts/:id/update", () => {
+            it("should return a status code 302", (done) => {
+              request.post({
+                url: `${base}/${this.topic.id}/posts/${this.post.id}/update`,
                 form: {
                   title: "Snowball Fighting",
-                  body: "test body okay"
+                  body: "I love watching them melt slowly."
+                }
+              }, (err, res, body) => {
+                expect(res.statusCode).toBe(302);
+                done();
+              });
+            });
+            it("should update the post with the given values", (done) => {
+              const options = {
+                url: `${base}/${this.topic.id}/posts/${this.post.id}/update`,
+                form: {
+                  title: "Snowball Fighting"
                 }
               };
               request.post(options,
                 (err, res, body) => {
                   expect(err).toBeNull();
                   Post.findOne({
-                    where: {id: post.id}
+                    where: {id: this.post.id}
                   })
                   .then((post) => {
-                    expect(post.title).toBe("this is a title");
+                    expect(post.title).toBe("Snowball Fighting");
                     done();
                   });
                 });
+              });
+              it("should be able to update another user's post", (done) => {
+                User.create({
+                  email: "member@example.com",
+                  password: "12345679",
+                  role: "member"
+                })
+                .then((user) => {
+                  Post.create({
+                    title: "this is a title",
+                    body: "this is the body for the title",
+                    topicId: this.topic.id,
+                    userId: user.id
+                  })
+                  .then((post) => {
+                    const options = {
+                      url: `${base}/${this.topic.id}/posts/${post.id}/update`,
+                      form: {
+                        title: "Snowball Fighting",
+                        body: "this is the body for the title"
+                      }
+                    };
+                    request.post(options,
+                      (err, res, body) => {
+                        expect(err).toBeNull();
+                        Post.findOne({
+                          where: {id: post.id}
+                        })
+                        .then((post) => {
+                          expect(post.title).toBe("Snowball Fighting");
+                          done();
+                        });
+                      });
+                    });
+                  });
+                });
+              });
             });
-          });
-        });
-      });
-    });
-  });
+
+            describe("member user performing CRUD actions for Post", () => {
+              beforeEach((done) => {
+                this.memberUser;
+                this.memberPost;
+                User.create({
+                  email: "member@example.com",
+                  password: "123456",
+                  role: "member"
+                })
+                .then((user) => {
+                  this.memberUser = user;
+                  Post.create({
+                    title: "member post",
+                    body: "this is a member post",
+                    topicId: this.topic.id,
+                    userId: user.id
+                  })
+                  .then((post) => {
+                    this.memberPost = post;
+                    request.get({
+                      url: "http://localhost:3000/auth/fake",
+                      form: {
+                        role: user.role,
+                        userId: user.id,
+                        email: user.email
+                      }
+                    },
+                    (err, res, body) => {
+                      done();
+                    }
+                  );
+                });
+              });
+            });
+
+            describe("GET /topics/:topicId/posts/:id", () => {
+              it("should render a view with the selected post", (done) => {
+                request.get(`${base}/${this.topic.id}/posts/${this.post.id}`, (err, res, body) => {
+                  expect(err).toBeNull();
+                  expect(body).toContain("Snowball Fighting");
+                  done();
+                });
+              });
+            });
+
+            describe("POST /topics/:topicId/posts/:id/destroy", () => {
+              it("should delete the post with the associated ID", (done) => {
+                request.post(`${base}/${this.topic.id}/posts/${this.memberPost.id}/destroy`, (err, res, body) => {
+                  Post.findById(this.memberPost.id)
+                  .then((post) => {
+                    expect(err).toBeNull();
+                    expect(post).toBeNull();
+                    done();
+                  })
+                });
+              });
+              it("should not destroy another user's post", (done) => {
+                User.create({
+                  email: "member@example.com",
+                  password: "12345679",
+                  role: "member"
+                })
+                .then((user) => {
+                  Post.create({
+                    title: "this is a title",
+                    body: "this is the body for the title",
+                    topicId: this.topic.id,
+                    userId: user.id
+                  })
+                  .then((post) => {
+                    request.post(`${base}/${this.topic.id}/posts/${post.id}/destroy`,
+                      (err, res, body) => {
+                        Post.findById(post.id)
+                        .then((post) => {
+                          expect(post).not.toBeNull();
+                          done();
+                        });
+                      });
+                    });
+                  });
+                });
+              });
+
+              describe("GET /topics/:topicId/posts/:id/edit", () => {
+                it("should render a view with an edit post form", (done) => {
+                  request.get(`${base}/${this.topic.id}/posts/${this.memberPost.id}/edit`, (err, res, body) => {
+                    expect(err).toBeNull();
+                    expect(body).toContain("Edit Post");
+                    expect(body).toContain("member post");
+                    done();
+                  });
+                });
+                it("should not edit another user's post", (done) => {
+                  User.create({
+                    email: "member@example.com",
+                    password: "12345679",
+                    role: "member"
+                  })
+                  .then((user) => {
+                    Post.create({
+                      title: "this is a title",
+                      body: "this is the body for the title",
+                      topicId: this.topic.id,
+                      userId: user.id
+                    })
+                    .then((post) => {
+                      request.get(`${base}/${this.topic.id}/posts/${post.id}/edit`,
+                        (err, res, body) => {
+                          expect(body).not.toContain("Edit Post");
+                          expect(err).toBeNull();
+                        });
+                        done();
+                      });
+                    });
+                  });
+                });
+
+                describe("POST /topics/:topicId/posts/:id/update", () => {
+                  it("should return a status code 302", (done) => {
+                    request.post({
+                      url: `${base}/${this.topic.id}/posts/${this.memberPost.id}/update`,
+                      form: {
+                        title: "Snowball Fighting",
+                        body: "I love watching them melt slowly."
+                      }
+                    }, (err, res, body) => {
+                      expect(res.statusCode).toBe(302);
+                      done();
+                    });
+                  });
+                  it("should update the post with the given values", (done) => {
+                    const options = {
+                      url: `${base}/${this.topic.id}/posts/${this.memberPost.id}/update`,
+                      form: {
+                        title: "Snowball Fighting",
+                        body: "test body okay"
+                      }
+                    };
+                    request.post(options,
+                      (err, res, body) => {
+                        expect(err).toBeNull();
+                        Post.findOne({
+                          where: {id: this.memberPost.id}
+                        })
+                        .then((post) => {
+                          expect(post.title).toBe("Snowball Fighting");
+                          done();
+                        });
+                      });
+                    });
+                    it("should not update another user's post", (done) => {
+                      User.create({
+                        email: "member@example.com",
+                        password: "12345679",
+                        role: "member"
+                      })
+                      .then((user) => {
+                        Post.create({
+                          title: "this is a title",
+                          body: "this is the body for the title",
+                          topicId: this.topic.id,
+                          userId: user.id
+                        })
+                        .then((post) => {
+                          const options = {
+                            url: `${base}/${this.topic.id}/posts/${post.id}/update`,
+                            form: {
+                              title: "Snowball Fighting",
+                              body: "test body okay"
+                            }
+                          };
+                          request.post(options,
+                            (err, res, body) => {
+                              expect(err).toBeNull();
+                              Post.findOne({
+                                where: {id: post.id}
+                              })
+                              .then((post) => {
+                                expect(post.title).toBe("this is a title");
+                                done();
+                              });
+                            });
+                          });
+                        });
+                      });
+                    });
+                  });
+                });

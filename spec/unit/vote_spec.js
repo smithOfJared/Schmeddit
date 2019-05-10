@@ -61,6 +61,8 @@ describe("Vote", () => {
     });
   });
 
+
+
   describe("#create()", () => {
     it("should create an upvote on a post for a user", (done) => {
       Vote.create({
@@ -97,6 +99,20 @@ describe("Vote", () => {
         console.log(err);
         done();
       });
+    });
+
+    it("should not allow more than one upvote or downvote per user", (done) => {
+      Vote.create({
+        value: 2,
+        postId: this.post.id,
+        userId: this.user.id
+      })
+      .then((vote) => {
+        expect(true).toBe(false);
+        done();
+      })
+      .catch((err) => expect(err).not.toBeNull())
+      done();
     });
 
     it("should not create a vote without assigned post or user", (done) => {

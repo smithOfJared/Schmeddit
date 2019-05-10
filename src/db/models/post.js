@@ -43,8 +43,16 @@ module.exports = (sequelize, DataTypes) => {
   Post.prototype.getPoints = function(){
     if(this.votes.length === 0) return 0
     return this.votes
-    .map((v) => { return v.value })
-    .reduce((prev, next) => { return prev + next });
+    .map(v => v.value)
+    .reduce((prev, next) =>  prev + next);
+  };
+  Post.prototype.hasUpvoteFor = function(userID){
+    if(this.votes.length === 0) return false
+    return this.votes.filter(v => v.value == 1 && v.userId == userId).length > 0
+  };
+  Post.prototype.hasDownvoteFor = function(userId){
+    if(this.votes.length === 0) return false
+    return this.votes.filter(v => v.value == -1 && v.userId == userId).length > 0
   };
   return Post;
 };
