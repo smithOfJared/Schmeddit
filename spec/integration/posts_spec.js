@@ -192,18 +192,18 @@ describe("routes : posts", () => {
         })
         .then((user) => {
           Post.create({
-            title: "this is a title",
-            body: "this is the body for the title",
-            topicId: this.topic.id,
-            userId: user.id
+            title: "Testing the post",
+            body: "It's a great test it sure is",
+            userId: user.id,
+            topicId: this.topic.id
           })
           .then((post) => {
             request.get(`${base}/${this.topic.id}/posts/${post.id}/edit`,
               (err, res, body) => {
                 expect(body).toContain("Edit Post");
                 expect(err).toBeNull();
+                done();
               });
-              done();
           });
         });
       });

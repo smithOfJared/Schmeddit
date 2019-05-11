@@ -103,7 +103,6 @@ describe("routes : advertisements", () => {
   });
     describe("GET /advertisements/:id/edit", () => {
       it("should render a view with an edit advertisement form", (done) => {
-        console.log(base + "this is the base");
         request.get(`${base}${this.advertisement.id}/edit`, (err, res, body) => {
           expect(err).toBeNull();
           expect(body).toContain("Edit Advertisement");

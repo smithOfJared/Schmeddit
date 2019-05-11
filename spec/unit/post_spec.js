@@ -2,6 +2,7 @@ const sequelize = require("../../src/db/models/index").sequelize;
 const Topic = require("../../src/db/models").Topic;
 const Post = require("../../src/db/models").Post;
 const User = require("../../src/db/models").User;
+const Vote = require("../../src/db/models").Vote;
 
 describe("Post", () => {
   beforeEach((done) => {
@@ -120,6 +121,45 @@ describe("Post", () => {
        this.post.getUser()
        .then((associatedUser) => {
          expect(associatedUser.email).toBe("starman@tesla.com");
+         done();
+       });
+     });
+   });
+
+   describe("hasUpvoteFor(userId)",() => {
+     it("should returns true if the user has upvoted the post", (done) => {
+       Vote.create({
+         value: 1,
+         postId: this.post.id,
+         userId: this.user.id
+       })
+       .then((vote) => {
+         expect(this.post.hasUpvoteFor(this.user.id)).toBe(true);
+         expect(this.post.hasDownvoteFor(this.user.id)).toBe(false);
+         done();
+       })
+       .catch((err) => {
+         console.log(err);
+         done();
+       });
+     });
+   });
+
+
+   describe("hasDownvoteFor(userId)",() => {
+     it("should return true if the user has downvoted the post", (done) => {
+       Vote.create({
+         value: -1,
+         postId: this.post.id,
+         userId: this.user.id
+       })
+       .then((vote) => {
+         expect(this.post.hasDownvoteFor(this.user.id)).toBe(true);
+         expect(this.post.hasUpvoteFor(this.user.id)).toBe(false);
+         done();
+       })
+       .catch((err) => {
+         console.log(err);
          done();
        });
      });

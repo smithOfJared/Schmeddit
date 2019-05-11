@@ -6,6 +6,11 @@
 <body>
   <% include ../static/partials/navbar.ejs %>
   <main class="container">
+    <div style="display: flex; align-items:center;">
+      <% if(currentUser) { %>
+        <% include ../votes/voting.ejs %>
+      <% } %>
+    </div>
     <div>
       <h1 class="d-inline-block"><%= post.title %></h1>
       <% post.flairs && post.flairs.forEach((flair) => { %>
