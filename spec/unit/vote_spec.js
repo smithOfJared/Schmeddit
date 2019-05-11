@@ -129,7 +129,7 @@ describe("Vote", () => {
       })
     });
   });
-<<<<<<< HEAD
+
   describe("hasUpvoteFor(userId)",() => {
     it("should returns true if the user has upvoted the post", (done) => {
       Vote.create({
@@ -168,8 +168,6 @@ describe("Vote", () => {
       });
     });
   });
-=======
->>>>>>> master
 
   describe("#setUser()", () => {
     it("should associate a vote and a user together", (done) => {
