@@ -7,6 +7,7 @@ module.exports = {
     const userRoutes = require("../routes/users");
     const commentRoutes = require("../routes/comments");
     const voteRoutes = require("../routes/votes");
+    const favoriteRoutes = require("../routes/favorites");
     const flairRoutes = require("../routes/flairs");
 
     if(process.env.NODE_ENV === "test") {
@@ -15,11 +16,12 @@ module.exports = {
     }
 
     app.use(staticRoutes);
+    app.use(topicRoutes);
     app.use(postRoutes);
     app.use(userRoutes);
     app.use(commentRoutes);
     app.use(voteRoutes);
-    app.use(topicRoutes);
+    app.use(favoriteRoutes);
     app.use(advertisementRoutes);
     app.use(flairRoutes);
   }
