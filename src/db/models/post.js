@@ -46,7 +46,7 @@ module.exports = (sequelize, DataTypes) => {
     .map(v => v.value)
     .reduce((prev, next) =>  prev + next);
   };
-  Post.prototype.hasUpvoteFor = function(userID){
+  Post.prototype.hasUpvoteFor = function(userId){
     if(this.votes.length === 0) return false
     return this.votes.filter(v => v.value == 1 && v.userId == userId).length > 0
   };
