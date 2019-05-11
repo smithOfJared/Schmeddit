@@ -130,6 +130,45 @@ describe("Vote", () => {
     });
   });
 
+  describe("hasUpvoteFor(userId)",() => {
+    it("should returns true if the user has upvoted the post", (done) => {
+      Vote.create({
+        value: 1,
+        postId: this.post.id,
+        userId: this.user.id
+      })
+      .then((vote) => {
+        expect(post.hasUpvoteFor(this.user.id)).toBe(true);
+        expect(post.hasDownvoteFor(this.user.id)).toBe(false);
+        done();
+      })
+      .catch((err) => {
+        console.log(err);
+        done();
+      });
+    });
+  });
+
+
+  describe("hasDownvoteFor(userId)",() => {
+    it("should return true if the user has downvoted the post", (done) => {
+      Vote.create({
+        value: -1,
+        postId: this.post.id,
+        userId: this.user.id
+      })
+      .then((vote) => {
+        expect(post.hasDownvoteFor(this.user.id)).toBe(true);
+        expect(post.hasUpvoteFor(this.user.id)).toBe(false);
+        done();
+      })
+      .catch((err) => {
+        console.log(err);
+        done();
+      });
+    });
+  });
+
   describe("#setUser()", () => {
     it("should associate a vote and a user together", (done) => {
       Vote.create({           // create a vote on behalf of this.user
