@@ -83,10 +83,11 @@ describe("routes : favorites", () => {
                 done();
               });
             });
-          });
+
         });
       });
     });
+  });
 
   describe("signed in user favoriting a post", () => {
      beforeEach((done) => {  // before each suite in this context

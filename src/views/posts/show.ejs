@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <% include ../static/partials/head.ejs %>
 </head>
+
 <body>
   <% include ../static/partials/navbar.ejs %>
   <main class="container">
@@ -11,6 +13,7 @@
         <% include ../votes/voting.ejs %>
       <% } %>
     </div>
+
     <div>
       <h1 class="d-inline-block"><%= post.title %></h1>
       <% post.flairs && post.flairs.forEach((flair) => { %>
@@ -20,22 +23,29 @@
             <button type="submit" class="badge badge-light">x</button>
           </form>
         </span>
-        <% }) %>
-      </div>
+      <% }) %>
+    </div>
+
       <a href="/topics/<%= post.topicId %>/posts/<%= post.id %>/edit" class="btn btn-warning">Edit</a>
       <a href="/topics/<%= post.topicId %>/posts/<%= post.id %>/flairs/new" class="btn btn-success">Add Flair</a>
+
       <form style="display:initial" action="/topics/<%= post.topicId %>/posts/<%= post.id %>/destroy" method="post">
         <button type="submit" class="btn btn-danger">Delete</button>
       </form>
+
+
       <% if(currentUser) { %>
         <% include ../favorites/favoriting.ejs %>
       <% } %>
+
+
       <p><%= post.body %></p>
+
       <section id="comment-form">
         <% if(currentUser) { %>
           <% include ../comments/new.ejs %>
-          <% } %>
-        </section>
+        <% } %>
+      </section>
 
         <section id="comment-list">
           <% if(post.comments) { %>
@@ -43,8 +53,9 @@
               <%- include("../comments/show.ejs", {comment}) %>
               <% }) %>
               <% } %>
-            </section>
-          </main>
+        </section>
+
+    </main>
           <% include ../static/partials/baseScripts.ejs %>
-        </body>
-        </html>
+  </body>
+</html>
