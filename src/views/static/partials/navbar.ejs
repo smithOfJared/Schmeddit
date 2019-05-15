@@ -6,13 +6,21 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav ml-auto">
+
         <li class="nav-item">
           <a class="nav-link" href="/topics">Topics</a>
         </li>
+
         <li class="nav-item">
           <a class="nav-link" href="/">Home</a>
         </li>
+
         <% if(currentUser) { %>
+
+          <li class="nav-item">
+            <a class="nav-link" href="/users/<%= currentUser.id %>">Profile</a>
+          </li>
+
           <li class="nav-item">
             <a class="nav-link" href="/users/sign_out">Sign out</a>
           </li>

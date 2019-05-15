@@ -69,30 +69,23 @@ describe("routes : votes", () => {
          const options = {
            url: `${base}${this.topic.id}/posts/${this.post.id}/votes/upvote`
          };
-         request.get(options,
-           (err, res, body) => {
-             Vote.findOne({
-               where: {
-                 userId: this.user.id,
-                 postId: this.post.id
-               }
-             })
-             .then((vote) => {
-               expect(vote).toBeNull();
+         Vote.all()
+         .then((votes) => {
+           const voteCountBeforeRequest = votes.length;
+           request.post(options, (err, res, body) => {
+             Vote.all()
+             .then((votes) => {
+               expect(err).toBeNull();
+               expect(votes.length).toBe(voteCountBeforeRequest);
                done();
              })
-             .catch((err) => {
-               console.log(err);
-               done();
-             });
-           }
-         );
+           });
+         })
        });
      });
    });
 
    describe("signed in user voting on a post", () => {
-
      beforeEach((done) => {  // before each suite in this context
        request.get({         // mock authentication
          url: "http://localhost:3000/auth/fake",
@@ -164,7 +157,6 @@ describe("routes : votes", () => {
            }
          );
        });
-     }); 
+     });
    });
-
-});
+ });
