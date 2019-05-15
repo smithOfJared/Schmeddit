@@ -19,52 +19,66 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {});
   Post.associate = function(models) {
+
     Post.belongsTo(models.Topic, {
       foreignKey: "topicId",
       onDelete: "CASCADE"
     });
+
     Post.belongsTo(models.User, {
       foreignKey: "userId",
       onDelete: "CASCADE"
     });
+
     Post.hasMany(models.Flair, {
       foreignKey: "postId",
       as: "flairs"
     });
+
     Post.hasMany(models.Comment, {
       foreignKey: "postId",
       as: "comments"
     });
+
     Post.hasMany(models.Vote, {
       foreignKey: "postId",
       as: "votes"
     });
+
     Post.hasMany(models.Favorite, {
-     foreignKey: "postId",
-     as: "favorites"
-   });
-   Post.afterCreate((post, callback) => {
-     return models.Favorite.create({
-       userId: post.userId,
-       postId: post.id
-     });
-   });
+      foreignKey: "postId",
+      as: "favorites"
+    });
+
+
   };
+
+  Post.afterCreate((post, callback) => {
+   return models.Favorite.create({
+     userId: post.userId,
+     postId: post.id
+   });
+ });
+
   Post.prototype.getPoints = function(){
     if(this.votes.length === 0) return 0
     return this.votes
     .map(v => v.value)
     .reduce((prev, next) =>  prev + next);
   };
+
   Post.prototype.hasUpvoteFor = function(userId){
     if(this.votes.length === 0) return false
     return this.votes.filter(v => v.value == 1 && v.userId == userId).length > 0
   };
+
   Post.prototype.hasDownvoteFor = function(userId){
     if(this.votes.length === 0) return false
     return this.votes.filter(v => v.value == -1 && v.userId == userId).length > 0
   };
+
   Post.prototype.getFavoriteFor = function(userId){
+    if(this.favorites.length === 0) return false
     return this.favorites.find((favorite) => { return favorite.userId == userId });
   };
   return Post;

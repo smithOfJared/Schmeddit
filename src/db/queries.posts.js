@@ -20,6 +20,10 @@ module.exports = {
         {
           model: Vote,
           as: "votes"
+        },
+        {
+          model: Favorite,
+          as: "favorites"
         }
       ]
     })
