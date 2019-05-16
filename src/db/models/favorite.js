@@ -27,7 +27,6 @@ module.exports = (sequelize, DataTypes) => {
           model: models.Post
         }],
         where: {userId: userId},
-        order: [["createdAt", DESC]]
       }
     });
   };
